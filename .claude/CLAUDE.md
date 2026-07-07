@@ -19,6 +19,7 @@ Reusable engineering logic (Shopee API integration, content-generation calls, an
 - Follow `knowledge/brand-guidelines/` for tone and voice on anything customer-facing.
 - Escalate to a human for anything ambiguous, high-risk (pricing, refunds, policy compliance), or not covered by an existing playbook — don't improvise on those.
 - Keep `data/raw/` and `data/processed/` out of git; they're regenerable from the Shopee API, not source of truth.
+- For any customer message, always run `shopee_marketing_ai.engagement.triage.needs_escalation()` first. If it returns `True`, escalate to a human directly — do not draft an auto-reply. If `False`, draft with `shopee_marketing_ai.engagement.responder.draft_reply()`, matching the tone in `knowledge/brand-guidelines/`, and still hold the draft for human approval before it's sent — triage passing is not the same as approval to send.
 
 ## Workflow
 1. Identify the task type and check `playbooks/` for a matching workflow.
