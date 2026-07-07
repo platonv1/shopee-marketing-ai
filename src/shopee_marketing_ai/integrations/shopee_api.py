@@ -25,6 +25,8 @@ class ShopeeClient:
         sleep_fn: Callable[[float], None] = time.sleep,
         now_fn: Callable[[], float] = time.monotonic,
     ):
+        if max_retries < 1:
+            raise ValueError("max_retries must be at least 1")
         self.partner_id = partner_id
         self.partner_key = partner_key
         self.shop_id = shop_id

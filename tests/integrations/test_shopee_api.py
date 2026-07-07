@@ -95,6 +95,39 @@ def test_get_enforces_minimum_interval_between_requests():
     assert sleeps == [pytest.approx(0.8)]
 
 
+def test_get_does_not_sleep_when_interval_already_elapsed():
+    clock = iter([100.0, 101.5])
+    sleeps = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json={"response": {}})
+
+    client = ShopeeClient(
+        partner_id="12345",
+        partner_key="secret",
+        shop_id="67890",
+        transport=httpx.MockTransport(handler),
+        min_request_interval=1.0,
+        now_fn=lambda: next(clock),
+        sleep_fn=lambda seconds: sleeps.append(seconds),
+    )
+
+    client.get("/api/v2/product/get_item_list", params={})
+    client.get("/api/v2/product/get_item_list", params={})
+
+    assert sleeps == []
+
+
+def test_shopee_client_rejects_non_positive_max_retries():
+    with pytest.raises(ValueError, match="max_retries"):
+        ShopeeClient(
+            partner_id="12345",
+            partner_key="secret",
+            shop_id="67890",
+            max_retries=0,
+        )
+
+
 def test_get_products_requests_item_list_endpoint():
     captured_requests = []
 
