@@ -8,3 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Secrets
+.env
+
+# Regenerable data pulls (source of truth is the Shopee API, not git)
+.claude/data/raw/
+.claude/data/processed/

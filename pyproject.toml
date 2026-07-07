@@ -1,7 +1,17 @@
 [project]
 name = "shopee-marketing-ai"
 version = "0.1.0"
-description = "Add your description here"
+description = "AI-assisted marketing system for a Shopee storefront: content generation, campaign automation, analytics, and customer engagement."
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "anthropic>=0.40.0",
+    "httpx>=0.27.0",
+    "pydantic-settings>=2.6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.0",
+    "ruff>=0.8.0",
+]
